@@ -84,7 +84,7 @@ namespace Szyfr_Afiniczny
             a = SzukajA(Int32.Parse(TxtBoxA.Text));
             try
             {
-                if (Int32.Parse(TxtBoxA.Text) + Int32.Parse(TxtBoxB.Text) == 0 || String.IsNullOrEmpty(TxtBoxA.Text))
+                if (Int32.Parse(TxtBoxA.Text) + Int32.Parse(TxtBoxB.Text) == 0)
                 {
                     MessageBox.Show("Suma A i B musi być większa od 0");
                 }
