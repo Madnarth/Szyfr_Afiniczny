@@ -38,6 +38,7 @@ namespace Szyfr_Afiniczny
                     wynik = i;
                 }
             }
+
             return wynik;
         }
         private void szyfruj(object sender, RoutedEventArgs e)
@@ -124,9 +125,10 @@ namespace Szyfr_Afiniczny
             }
             try
             {
-                if (Int32.Parse(TxtBoxA.Text) == 0)
+                if (Int32.Parse(TxtBoxA.Text) == 0 || (Int32.Parse(TxtBoxA.Text) %2) == 0)
                 {
-                    MessageBox.Show("Wartość A nie może być równa 0");
+                    MessageBox.Show("Wartość A nie może być równa 0 lub parzysta");
+                    TxtBoxA.Text = TxtBoxA.Text.Remove(TxtBoxA.Text.Length - 1);
                 }
             }
             catch (Exception)
