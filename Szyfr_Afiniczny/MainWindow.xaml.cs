@@ -24,16 +24,30 @@ namespace Szyfr_Afiniczny
         {
             InitializeComponent();
         }
-        char[] alfabet = new char[35] { 'a', 'ą', 'b', 'c', 'ć', 'd', 'e', 'ę', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'ł', 'm', 'n', 'ń', 'o', 'ó', 'p', 'q', 'r', 's', 'ś', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'ź', 'ż', };
+        char[] alfabetPol = new char[32] { 'a', 'ą', 'b', 'c', 'ć', 'd', 'e', 'ę', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'ł', 'm', 'n', 'ń', 'o', 'ó', 'p', 'r', 's', 'ś', 't', 'u', 'w', 'y', 'z', 'ź', 'ż', };
+        char[] alfabetAng = new char[26] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', };
         int przesuniecie, a;
         char znak;
 
-        private int SzukajA(int a)
+        private int SzukajAPol(int a)
         {
             int wynik = 0;
-            for (int i = 1; i < 35; i++)
+            for (int i = 1; i < 32; i++)
             {
-                if (((a * i) %35) == 1)
+                if (((a * i) %32) == 1)
+                {
+                    wynik = i;
+                }
+            }
+
+            return wynik;
+        }
+        private int SzukajAAng(int a)
+        {
+            int wynik = 0;
+            for (int i = 1; i < 26; i++)
+            {
+                if (((a * i) % 26) == 1)
                 {
                     wynik = i;
                 }
@@ -45,6 +59,7 @@ namespace Szyfr_Afiniczny
         {
             przesuniecie = 0;
             znak = '0';
+            var wybor = ((ComboBoxItem)ComboBoxJezyk.SelectedItem).Content as string;
 
             try
             {
@@ -55,19 +70,38 @@ namespace Szyfr_Afiniczny
                 else
                 {
                     TxtBoxSzyf.Text = "";
-                    foreach (char c in TxtBoxNieszyf.Text)
+                    if (wybor=="Polski")
                     {
-                        znak = c;
-
-                        if (Char.IsLetter(znak))
+                        foreach (char c in TxtBoxNieszyf.Text)
                         {
-                            przesuniecie = (Array.IndexOf(alfabet, znak) * Int32.Parse(TxtBoxA.Text) + Int32.Parse(TxtBoxB.Text)) %35;
+                            znak = c;
 
-                            TxtBoxSzyf.Text += alfabet[przesuniecie];
-                        }
-                        else
+                            if (Char.IsLetter(znak))
+                            {
+                                przesuniecie = (Array.IndexOf(alfabetPol, znak) * Int32.Parse(TxtBoxA.Text) + Int32.Parse(TxtBoxB.Text)) % 32;
+                                TxtBoxSzyf.Text += alfabetPol[przesuniecie];
+                            }
+                            else
+                            {
+                                TxtBoxSzyf.Text += znak;
+                            }
+                        } 
+                    }
+                    else
+                    {
+                        foreach (char c in TxtBoxNieszyf.Text)
                         {
-                            TxtBoxSzyf.Text += znak;
+                            znak = c;
+
+                            if (Char.IsLetter(znak))
+                            {
+                                przesuniecie = (Array.IndexOf(alfabetAng, znak) * Int32.Parse(TxtBoxA.Text) + Int32.Parse(TxtBoxB.Text)) % 26;
+                                TxtBoxSzyf.Text += alfabetAng[przesuniecie]; 
+                            }
+                            else
+                            {
+                                TxtBoxSzyf.Text += znak;
+                            }
                         }
                     }
 
@@ -82,7 +116,17 @@ namespace Szyfr_Afiniczny
         {
             przesuniecie = 0;
             znak = '0';
-            a = SzukajA(Int32.Parse(TxtBoxA.Text));
+            var wybor = ((ComboBoxItem)ComboBoxJezyk.SelectedItem).Content as string;
+
+            if (wybor=="Polski")
+            {
+                a = SzukajAPol(Int32.Parse(TxtBoxA.Text)); 
+            }
+            else
+            {
+                a = SzukajAAng(Int32.Parse(TxtBoxA.Text));
+            }
+
             try
             {
                 if (Int32.Parse(TxtBoxA.Text) + Int32.Parse(TxtBoxB.Text) == 0)
@@ -92,22 +136,46 @@ namespace Szyfr_Afiniczny
                 else
                 {
                     TxtBoxRoszyf.Text = "";
-                    foreach (char c in TxtBoxZaszyf.Text)
+                    if (wybor=="Polski")
                     {
-                        znak = c;
+                        foreach (char c in TxtBoxZaszyf.Text)
+                        {
+                            znak = c;
 
-                        if (Char.IsLetter(znak))
-                        {
-                            przesuniecie = (a * (Array.IndexOf(alfabet, znak) - Int32.Parse(TxtBoxB.Text))) % 35;
-                            if (przesuniecie < 0)
+                            if (Char.IsLetter(znak))
                             {
-                                przesuniecie += 35;
+                                przesuniecie = (a * (Array.IndexOf(alfabetPol, znak) - Int32.Parse(TxtBoxB.Text))) % 32;
+                                if (przesuniecie < 0)
+                                {
+                                    przesuniecie += 32;
+                                }
+                                TxtBoxRoszyf.Text += alfabetPol[przesuniecie];
                             }
-                            TxtBoxRoszyf.Text += alfabet[przesuniecie];
-                        }
-                        else
+                            else
+                            {
+                                TxtBoxRoszyf.Text += znak;
+                            }
+                        } 
+                    }
+                    else
+                    {
+                        foreach (char c in TxtBoxZaszyf.Text)
                         {
-                            TxtBoxRoszyf.Text += znak;
+                            znak = c;
+
+                            if (Char.IsLetter(znak))
+                            {
+                                przesuniecie = (a * (Array.IndexOf(alfabetAng, znak) - Int32.Parse(TxtBoxB.Text))) % 26;
+                                if (przesuniecie < 0)
+                                {
+                                    przesuniecie += 26;
+                                }
+                                TxtBoxRoszyf.Text += alfabetAng[przesuniecie];
+                            }
+                            else
+                            {
+                                TxtBoxRoszyf.Text += znak;
+                            }
                         }
                     }
                 }
@@ -128,6 +196,19 @@ namespace Szyfr_Afiniczny
                 if (Int32.Parse(TxtBoxA.Text) == 0 || (Int32.Parse(TxtBoxA.Text) %2) == 0)
                 {
                     MessageBox.Show("Wartość A nie może być równa 0 lub parzysta");
+                    TxtBoxA.Text = TxtBoxA.Text.Remove(TxtBoxA.Text.Length - 1);
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            try
+            {
+                var wybor = ((ComboBoxItem)ComboBoxJezyk.SelectedItem).Content as string;
+                if (wybor=="Angielski" && Int32.Parse(TxtBoxA.Text) == 13)
+                {
+                    MessageBox.Show("Wartość A nie może być równa 13 dla alfabetu Angielskiego");
                     TxtBoxA.Text = TxtBoxA.Text.Remove(TxtBoxA.Text.Length - 1);
                 }
             }
