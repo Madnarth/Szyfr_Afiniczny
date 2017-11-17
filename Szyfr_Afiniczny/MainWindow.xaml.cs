@@ -24,16 +24,16 @@ namespace Szyfr_Afiniczny
         {
             InitializeComponent();
         }
-        char[] alfabet = new char[32] { 'a', 'ą', 'b', 'c', 'ć', 'd', 'e', 'ę', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'ł', 'm', 'n', 'ń', 'o', 'ó', 'p', 'r', 's', 'ś', 't', 'u', 'w', 'y', 'z', 'ź', 'ż', };
+        char[] alfabet = new char[35] { 'a', 'ą', 'b', 'c', 'ć', 'd', 'e', 'ę', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'ł', 'm', 'n', 'ń', 'o', 'ó', 'p', 'q', 'r', 's', 'ś', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'ź', 'ż', };
         int przesuniecie, a;
         char znak;
 
         private int SzukajA(int a)
         {
             int wynik = 0;
-            for (int i = 1; i < 32; i++)
+            for (int i = 1; i < 35; i++)
             {
-                if (((a * i) %32) == 1)
+                if (((a * i) %35) == 1)
                 {
                     wynik = i;
                 }
@@ -61,7 +61,7 @@ namespace Szyfr_Afiniczny
 
                         if (Char.IsLetter(znak))
                         {
-                            przesuniecie = (Array.IndexOf(alfabet, znak) * Int32.Parse(TxtBoxA.Text) + Int32.Parse(TxtBoxB.Text)) %32;
+                            przesuniecie = (Array.IndexOf(alfabet, znak) * Int32.Parse(TxtBoxA.Text) + Int32.Parse(TxtBoxB.Text)) %35;
 
                             TxtBoxSzyf.Text += alfabet[przesuniecie];
                         }
@@ -98,10 +98,10 @@ namespace Szyfr_Afiniczny
 
                         if (Char.IsLetter(znak))
                         {
-                            przesuniecie = (a * (Array.IndexOf(alfabet, znak) - Int32.Parse(TxtBoxB.Text))) % 32;
+                            przesuniecie = (a * (Array.IndexOf(alfabet, znak) - Int32.Parse(TxtBoxB.Text))) % 35;
                             if (przesuniecie < 0)
                             {
-                                przesuniecie += 32;
+                                przesuniecie += 35;
                             }
                             TxtBoxRoszyf.Text += alfabet[przesuniecie];
                         }
